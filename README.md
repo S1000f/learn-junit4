@@ -27,3 +27,32 @@
   + `is()` --> 단순히 넘겨받은 매처를 다시 반환하는 역활. 데코레이터.
   + `not()` --> 다른 매처를 부정할때 사용
   + `nullValue()` `notNullValue()` --> null인지 아닌지 검사
+  
+### 200320
+- 부동소수점 실수 두 개의 비교 --> `closeTo()` 매처를 사용하면 편리하다 `org.hamcrest.number.IsCloseTo.*;`
+- 단, junit에 기본 포함된 hamcrest매처에 없을 수 도 있음 --> 별도로 필요한 hamcrest 라이브러리를 다운받아 프로젝트에 넣어줘야 함
+- 단언에는 마치 주석처럼, 해당 단언을 부연 설명해줄 수 있는 message 라는 선택적 인자가 있다. 순서는 첫 번째
+  + ex) `assertThat("message you want", actual, matcher);`
+  + 무작정 남용하지 말고, 부연 설명이 없더라도 단언문 그 자체로 해당 목적을 명확하게 인지할 수 있도록 작성하는 노력을 해야함
+  + 명확한 테스트 이름, 의미 있는 상수, 의미 있는 변수이름, 가독성 있게 매처를 사용 등등...
+  
+- 예외처리 테스트
+  + 예외가 발생될 상황에서 예외가 잘 던져지는지를 테스트 하는 것. 즉, '기대한' 예외가 발생되면 테스트는 성공이며, '기대한' 예외가 발생되지 않으면 테스트 오류
+  + *테스트 코드 그 자체에서 발생하는 예외를 처리 하려는 것이 아님*
+  + 1. 테스트 어노테이션 사용--> `@Test(expected = 예외클래스이름.class)`
+  + 2. try/catch 사용--> try문 안에 fail(); 삽입(catch문에서 예외를 못 잡을 시 테스트 실패)
+  + 3. ExpectedException 사용-->
+    ```java
+    @Rule
+    public ExpectedException ex = ExpectedException.none();
+      ...
+    @Test
+    public void test() {
+      ex.expect(예외클래스이름.class);
+      ex.expectMessage(...);
+        ...
+      기대한 예외발생 테스트 코드;
+        ...
+    };
+    ```
+  
