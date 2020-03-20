@@ -10,7 +10,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 class InsufficientFundsException extends RuntimeException {
     public InsufficientFundsException(String message) {
@@ -121,9 +123,39 @@ public class AssertTest {
 		assertThat(account.getName(), is(notNullValue()));
 	}
 	
+	@Test
+	public void TestWithWorthlessComment() {
+		account.deposit(50);
+		assertThat("account has 100, maybe", account.getBalance(), equalTo(50));
+	}
 	
+	@Test(expected = InsufficientFundsException.class)
+	public void exceptionTest() {
+		account.withdraw(200);
+	}
 	
+	@Test
+	public void exceptionTestUsingTrycatch() {
+		
+		try {
+			account.withdraw(100);
+			fail();
+			
+		} catch (InsufficientFundsException intended) {
+			assertThat(intended.getMessage(), equalTo("balance only 0"));
+		}
+	}
 	
+	@Rule
+	public ExpectedException ex = ExpectedException.none();
+	
+	@Test
+	public void exceptionRule() {
+		ex.expect(InsufficientFundsException.class);
+		ex.expectMessage("balance only 0");
+		
+		account.withdraw(3000);
+	}
 
 }
 
