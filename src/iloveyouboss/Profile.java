@@ -3,14 +3,6 @@ package iloveyouboss;
 import java.util.HashMap;
 import java.util.Map;
 
-class Answer {
-
-	public String getQuestionText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-}
 
 public class Profile {
 	private Map<String, Answer> answers = new HashMap<>();

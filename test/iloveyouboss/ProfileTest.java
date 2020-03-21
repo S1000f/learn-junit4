@@ -2,6 +2,7 @@ package iloveyouboss;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class ProfileTest {
@@ -19,7 +20,7 @@ public class ProfileTest {
 	@Test
 	public void matchAnswersFalseWhenMustMatchCriteriaNotMet() {
 		// Arrange
-		Answer profileAnswer = new Answer(question, BOOL.FALSE);
+		Answer profileAnswer = new Answer(question, Bool.FALSE);
 		profile.add(profileAnswer);
 		
 		Answer criteriaAnswer = new Answer(question, Bool.TRUE);
@@ -36,7 +37,7 @@ public class ProfileTest {
 	@Test
 	public void matchAnswersTrueForAnyDontCareCriteria() {
 		// Arrange
-		Answer profileAnswer = new Answer(question, BOOL.FALSE);
+		Answer profileAnswer = new Answer(question, Bool.FALSE);
 		profile.add(profileAnswer);
 		
 		Answer criteriaAnswer = new Answer(question, Bool.TRUE);
