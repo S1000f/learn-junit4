@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class AssertHamcrestTest {
 	
-	@Ignore
+	@Ignore("don't forget me!!!")
 	@Test
 	public void doubleTypeTest() {
 		
