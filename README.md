@@ -1,12 +1,13 @@
-# learn-junit4
+# JUnit로 배우는 TDD 기초
 참고서적
 
 자바와 JUnit을 활용한 실용주의 단위 테스트 -길벗, 2019
 
 Junit in Action -인사이트,2011
 
-## 실행환경
-- IDE: Eclipse 2019-12
+## 학습환경
+- Windows 10, macOS Catalina
+- IDE: IntelliJ IDEA CE 2019.3.4, eclipse 2019-12
 - jdk 8
 ---
 ### 200317
@@ -20,7 +21,7 @@ Junit in Action -인사이트,2011
 - 여러 테스트에 중복된 로직이 있다면 `@Before` 메서드에 정의할 것
 
 ### 200319
-- '단언(assert)'은 어떤 조건이 참인지 검증하는 정적 메소드
+- '단언(assert)'은 어떤 조건이 참인지 검증하는 메소드
 - `assertTrue` Junit 에서 기본 제공하는 단언 --> `import static org.junit.Assert.*;`
 - `assertThat` hamcrest 에서 제공하는 단언(hamcrest는 matchers의 애너그램...) --> `import static org.hamcrest.CoreMatchers.*;`
   + `assertThat(actual, matcher);` actual은 검증하고자 하는 값, matcher는 검증하고자 하는 대상의 (같다고)기대하는 값
@@ -82,3 +83,58 @@ Junit in Action -인사이트,2011
     @After after01
     ```
 - 테스트 클래스 단위의 before와 after도 있다. `@BeforeClass` `@AfterClass`
+
+### 200328
+
+- 테스트 클래스의 조건
+  + 접근제어자가 `public`
+  + 파라미터를 받지않는 생성자를 제공해야함 --> 자바가 암시적으로 만들어주는 default constructor가 이 조건에 부합됨
+  > 테스트 클래스의 이름은 Test로 끝나도록 한다. 반드시 지킬 필요는 없지만 웬만하면...
+  
+- 테스트 메서드의 조건
+  + 접근제어자 `public`
+  + 반환형 `void`
+  + `@Test` 어노테이션이 부여되어 있어야 함
+  
+- 파라미터화 테스트 러너
+  + 동일한 테스트를 다양한 인자값을 대입하여 반복 수행하는 테스트
+  + JUnit 런타임 작동방식
+    1. 정적 메소드를 호출해 컬렉션 객체를 얻는다
+    2. 컬렉션에 저장된 배열의 수만큼 순환한다
+    3. 한번의 루프당 유일한 public 생성자를 찾는다
+    4. 생성자에 배열 원소를 넣은 후 생성자를 호출한다
+    5. 이제 @Test 메서드를 찾아 호출한다
+  
+```java
+@RunWith(value = Parameterized.class) // 파라미터화 테스트 클래스 어노테이션
+public class ParameterizedTest {
+    private double expected;  // 테스트에 사용될 변수 선언
+    private double valueOne;
+    private double valueTwo;
+
+    @Parameterized.Parameters // 테스트에 사용될 파라미터를 저장하기 위한 메소드 필요
+    public static Collection<Integer[]> getParameters() {  // 반드시 static 으로 선언, 메소드가 받는 인자 없음
+        return Arrays.asList(new Integer[][] {  // 반드시 java.util.Collection 사용, 컬렉션의 원소는 배열
+                {2, 1, 1},
+                {3, 2, 1},
+                {4, 3, 1},
+        });
+    }
+    
+    // 유일한 public 생성자가 필요하며, 인자의 타입과 개수는 선언된 맴버변수 즉, 파라미터 변수와 동일해야함
+    public ParameterizedTest(double expected, double valueOne, double valueTwo) {
+        this.expected = expected;
+        this.valueOne = valueOne;
+        this.valueTwo = valueTwo;
+    }
+
+    @Test
+    public void sum() {
+        Calculator calc = new Calculator();
+        assertEquals(expected, calc.add(valueOne, valueTwo), 0);
+    }
+}
+```
+  
+  
+
