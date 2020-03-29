@@ -1,6 +1,7 @@
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.junit.runners.Suite;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,3 +35,4 @@ public class ParameterizedTest {
         assertEquals(expected, calc.add(valueOne, valueTwo), 0);
     }
 }
+
