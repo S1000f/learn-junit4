@@ -83,6 +83,7 @@ Junit in Action -인사이트,2011
     @After after01
     ```
 - 테스트 클래스 단위의 before와 after도 있다. `@BeforeClass` `@AfterClass`
+- `@Before/@After`, `@BeforeClass/@AfterClass` 모두 반드시 public 이어야 하며 `@BeforeCalss/@AfterClass`는 동시에 static이어야 함
 
 ### 200328
 
@@ -136,5 +137,10 @@ public class ParameterizedTest {
 }
 ```
   
+### 200330
+
+- '도메인 객체' : 단위 테스트에서 도메인 객체란 실제 애플리케이션에 포함된 객체를 말함
+- '테스트 객체' : 테스트 시 도메인 객체와 상호작용할 객체
+- 하나의 테스트(`@Test`)에서는 하나의 객체만 테스트해야 한다. 만약 한 번에 두 개 이상을 테스트 한다면 그 중 하나의 객체만 수정되어도 서로 간에 어떤 영향을 줄지 예측하기 어렵다. 만약 테스트 대상 객체(도메인객체)가 다른 객체와 복잡한 상호작용을 한다면, 예측가능한 테스트용 도우미 객체로 감싸서 테스트를 수행한다
   
 
