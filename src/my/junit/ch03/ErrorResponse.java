@@ -16,4 +16,10 @@ public class ErrorResponse implements Response {
     public Exception getOriginException() {
         return this.originException;
     }
+
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }
