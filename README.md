@@ -148,3 +148,59 @@ public class ParameterizedTest {
 - 테스트 클래스가 복잡하지 않다면, 기존의 테스트 클래스의 내부 클래스(nested class)로 선언하는 방법도 있다.
 - 하나의 테스트 메소드(`@Test`)안에는 반드시 하나 이상의 assert문을 사용해야 한다. 단언문이 없으면 해당 테스트는 무조건 성공한다.
 - `assertEquals()` 메소드는, `equalTo()`매처 처럼 비교기반을 자바의 `Object.equals()`사용하므로, 필요에 따라 적절히 오버라이딩 하여 사용하자
+
+### 200411
+
+- 타임아웃 테스트
+  + 주어진 시간안에 동작을 완료할 수 있는지 검사하는 테스트
+  + `@Test(timeout = 밀리세컨드)` --> 주어진 시간안에 완료되지 못한 테스트는 실패함
+  + 소수의 타임아웃 테스트가 전체 테스트 빌드를 실패하게 할 수도 있음. 따라서 명확한 제한시간이 정해지지 않았다면 일부 테스트들은 건너뛰는 것이 좋을때도 있다 --> `@Ignore` 를 사용하여 해당 테스트를 건너뛸 수 있다.
+  + `@Ignore(value = 이그노어를 설정한 이유 명시 )` value 파라미터에 해당 테스트를 건너뛴 이유를 명시하면, 전체 테스트 빌드 실행시 해당 내용이 테스트 결과창에 출력됨
+  
+- Hamcrest의 특징
+  + 다양한 매처를 조합하여 사용할 수 있다
+  + assert가 실패했을때 실패의 원인을 직관적이고 상세히 출력해준다
+  ```java
+  public class HamcrestTest {
+    private List<String> list;
+
+    @Before
+    public void setList() {
+        list = new ArrayList<>();
+        list.add("x");
+        list.add("y");
+        list.add("z");
+    }
+
+    @Test // test1
+    public void testWithoutHamcrest() {
+        assertTrue(list.contains("one") || list.contains("two") || list.contains("three"));
+    }
+
+    @Test // test2
+    public void testWithHamcrest() {
+        assertThat(list, hasItem(anyOf(equalTo("one"), equalTo("two"), equalTo("Three"))));
+    }
+  }
+  ```
+  + Hamcrest 미사용시(test1) 실패 메시지
+  ```java
+  java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:86)
+	at org.junit.Assert.assertTrue(Assert.java:41)
+	at org.junit.Assert.assertTrue(Assert.java:52)
+	at my.junit.ch03.HamcrestTest.testWithoutHamcrest(HamcrestTest.java:30)
+  ...
+  ```
+  
+  + Hamcrest 사용시(test2) 실패 메시지
+  ```java
+  java.lang.AssertionError: 
+  Expected: a collection containing ("one" or "two" or "Three")
+     but: was "x", was "y", was "z"
+  Expected :a collection containing ("one" or "two" or "Three")
+  Actual   :"x", was "y", was "z"
+  <Click to see difference>
+  ...
+  ```
+  
