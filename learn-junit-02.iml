@@ -28,5 +28,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.eclipse.jetty:jetty-servlets:9.3.0.RC0" level="project" />
   </component>
 </module>
