@@ -1,5 +1,6 @@
 package my.junit.ch03;
 
+import my.junit.ch03.*;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
