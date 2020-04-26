@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="learn-junit-02" />
         <module name="learn-junit4" />
+        <module name="learn-junit" />
+        <module name="learn-junit-02" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="learn-junit" target="1.8" />
       <module name="learn-junit-02" target="1.8" />
       <module name="learn-junit4" target="1.8" />
     </bytecodeTargetLevel>
