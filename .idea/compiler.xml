@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="learn-junit-02" />
+        <module name="learn-junit4" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="learn-junit-02" target="1.8" />
+      <module name="learn-junit4" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
