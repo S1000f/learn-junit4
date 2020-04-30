@@ -1,7 +1,6 @@
 package my.junit.ch06;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mortbay.jetty.HttpHeaders;
@@ -18,12 +17,13 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TestWebClient {
-    private class TestGetContentOkHandler extends AbstractHandler {
+    private class TestGetContentOkHandler extends AbstractHandler { // Jetty의 AbstractHandler 추상클래스를 상속
         @Override
         public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
-                throws IOException, ServletException {
+                throws IOException {
             OutputStream out = response.getOutputStream();
             ByteArrayISO8859Writer writer = new ByteArrayISO8859Writer();
             writer.write("It works");
@@ -35,6 +35,14 @@ public class TestWebClient {
         }
     }
 
+    private class TestGetContentNotFoundHandler extends AbstractHandler {
+        @Override
+        public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
+                throws IOException {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
     @BeforeClass
     public static void setUp() throws Exception {
         Server server = new Server(8080);
@@ -43,6 +51,9 @@ public class TestWebClient {
 
         Context contextOkContent = new Context(server, "/testGetContentOk");
         contextOkContent.setHandler(t.new TestGetContentOkHandler());
+
+        Context contentNotFoundContext = new Context(server, "/testGetContentNotFound");
+        contentNotFoundContext.setHandler(t.new TestGetContentNotFoundHandler());
 
         server.setStopAtShutdown(true);
         server.start();
@@ -59,5 +70,13 @@ public class TestWebClient {
         String result = client.getContent(new URL("http://localhost:8080/testGetContentOk"));
 
         assertEquals("It works", result);
+    }
+
+    @Test
+    public void testGetContentNotFound() throws Exception {
+        WebClient client = new WebClient();
+        String result = client.getContent(new URL("http://localhost:8080/testGetContentNotFound"));
+
+        assertNull(result);
     }
 }
