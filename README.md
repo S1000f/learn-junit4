@@ -7,8 +7,10 @@ Junit in Action -인사이트,2011
 
 ## 학습환경
 - Windows 10, macOS Catalina
-- IDE: IntelliJ IDEA CE 2019.3.4, eclipse 2019-12
-- jdk 8
+- IDE: IntelliJ IDEA CE, eclipse 2019-12
+- jdk 1.8
+- JUnit 4.13
+
 ---
 ### 200317
 - `@Test` 어노테이션이 붙은 메서드를 테스트로 실행 `import org.junit.*;`
