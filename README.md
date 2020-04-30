@@ -239,4 +239,37 @@ public class ParameterizedTest {
 	+ 임베디드 웹 서버 사용시 이점
 		* 테스트케이스 내에서 프로그램적으로 제어 가능
 		* 스텁으로 대체할 부분이 jetty 핸들러 뿐이므로, 서버 자체에 대해 익힐 필요가 없음
-    
+		
+- Jetty Handler 예제 (특정 리소스를 반환하는 Jetty 핸들러: 여기서는 It works 문자열)
+
+	```java
+	private class TestGetContentOkHandler extends AbstractHandler { // Jetty의 AbstractHandler 추상클래스를 상속
+		@Override
+		public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
+			throws IOException {
+		    OutputStream out = response.getOutputStream();
+		    ByteArrayISO8859Writer writer = new ByteArrayISO8859Writer();
+		    writer.write("It works"); // 이 핸들러 요청시 It works 문자열을 반환
+		    writer.flush();
+			// 출력스트림에 쓰일 컨텐츠의 길이 설정(jetty 요구사항)
+		    response.setIntHeader(HttpHeaders.CONTENT_LENGTH, writer.size()); 
+		    writer.writeTo(out);
+		    out.flush();
+		}
+	}
+	```
+	
+- Jetty 서버 사용하기
+	```java
+	@BeforeClass // 본 서버를 사용하는 테스트가 여러개일 경우, 매 테스트 마다 서버를 시작/종료 하지 않도록 BeforeClass 를 사용
+    public static void setUp() throws Exception {
+        Server server = new Server(8080);
+
+        TestWebClient t = new TestWebClient();
+        Context contextOkContent = new Context(server, "/testGetContentOk"); // url 맵핑
+        contextOkContent.setHandler(t.new TestGetContentOkHandler()); // 만들어둔 핸들러에게 http 요청을 전달
+
+        server.setStopAtShutdown(true); // 셧다운 시 서버를 자동 종료되도록 함 -> AfterClass 메서드를 구현할 필요 없음
+        server.start();
+    }
+	```
