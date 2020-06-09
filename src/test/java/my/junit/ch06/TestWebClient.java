@@ -9,7 +9,6 @@ import org.mortbay.jetty.handler.AbstractHandler;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.util.ByteArrayISO8859Writer;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
