@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/learn-junit.iml" filepath="$PROJECT_DIR$/learn-junit.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/learn-junit4.iml" filepath="$PROJECT_DIR$/.idea/learn-junit4.iml" />
     </modules>
   </component>

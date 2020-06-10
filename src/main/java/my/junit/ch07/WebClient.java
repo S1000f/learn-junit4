@@ -7,19 +7,16 @@ import java.net.URL;
 
 public class WebClient {
 
-    public String getContent(URL url) {
+    public String getContent(ConnectionFactory connectionFactory) {
         StringBuffer content = new StringBuffer();
         try {
-            HttpURLConnection conn = createHttpURLConnection(url);
-            conn.setDoInput(true);
-
-            InputStream is = conn.getInputStream();
+            InputStream is = connectionFactory.getData();
             int count;
             while (-1 != (count = is.read())) {
                 content.append(new String(Character.toChars(count)));
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             return null;
         }
         return content.toString();
